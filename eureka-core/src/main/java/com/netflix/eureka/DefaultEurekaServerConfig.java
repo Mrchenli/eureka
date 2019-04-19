@@ -100,7 +100,7 @@ public class DefaultEurekaServerConfig implements EurekaServerConfig {
         this.namespace = namespace;
         init();
     }
-
+    //todo 将所有配置加载到ConfigurationManager中去；
     private void init() {
         String env = ConfigurationManager.getConfigInstance().getString(
                 EUREKA_ENVIRONMENT, TEST);

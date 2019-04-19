@@ -1,14 +1,5 @@
 package com.netflix.eureka.resources;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.regex.Pattern;
-
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.InstanceInfo.InstanceStatus;
 import com.netflix.discovery.shared.resolver.DefaultEndpoint;
@@ -30,10 +21,16 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -53,11 +50,11 @@ public class EurekaClientServerRestIntegrationTest {
 
     private static EurekaServerConfig eurekaServerConfig;
 
-    private static Server server;
+    private static Server server;//启动的服务
     private static TransportClientFactory httpClientFactory;
 
-    private static EurekaHttpClient jerseyEurekaClient;
-    private static JerseyReplicationClient jerseyReplicationClient;
+    private static EurekaHttpClient jerseyEurekaClient;//注册啥的
+    private static JerseyReplicationClient jerseyReplicationClient;//发心跳啥的
 
     /**
      * We do not include ASG data to prevent server from consulting AWS for its status.
@@ -69,9 +66,9 @@ public class EurekaClientServerRestIntegrationTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        injectEurekaConfiguration();
-        startServer();
-        createEurekaServerConfig();
+        injectEurekaConfiguration();//设置一些全局变量
+        startServer();//启动eureka server
+        createEurekaServerConfig();//eureka-server-config 只是在后面的client里有用到
 
         httpClientFactory = JerseyEurekaHttpClientFactory.newBuilder()
                 .withClientName("testEurekaClient")
@@ -245,6 +242,7 @@ public class EurekaClientServerRestIntegrationTest {
 
         eurekaServiceUrl = "http://localhost:8080/v2";
     }
+
 
     private static File findWar() {
         File dir = null;
